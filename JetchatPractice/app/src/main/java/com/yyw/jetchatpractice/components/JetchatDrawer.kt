@@ -23,7 +23,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterStart
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -40,11 +40,18 @@ import com.yyw.jetchatpractice.ui.theme.JetchatPracticeTheme
 
 @Composable
 fun JetchatDrawerContent(
-    onProfileClicked: (String) -> Unit, onChatClicked: (String) ->
-    Unit
+    chartName: String = "#composers",
+    onProfileClicked: (String) -> Unit = {},
+    onChatClicked: (String) -> Unit ={}
 ) {
     // Use windowInsetsTopHeight() to add a spacer which pushes the drawer content
     // below the status bar (y-axis)
+    val selected by remember(chartName) {
+        mutableStateOf(chartName == "#composers")
+    }
+    val droidSelected by remember(selected) {
+        derivedStateOf { !selected }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,8 +61,8 @@ fun JetchatDrawerContent(
         DrawerHeader()
         DividerItem()
         DrawerItemHeader("Chats")
-        ChatItem("composers", true) { onChatClicked("#composers") }
-        ChatItem("droidcon-nyc", false) { onChatClicked("#droidcon-nyc") }
+        ChatItem("composers", selected) { onChatClicked("#composers") }
+        ChatItem("droidcon-nyc", droidSelected) { onChatClicked("#droidcon-nyc") }
         DividerItem()
         DrawerItemHeader("Recent Profiles")
         ProfileItem("Ali Conors (you)", meProfile.photo) { onProfileClicked(meProfile.userId) }
@@ -184,7 +191,7 @@ fun DrawerPreview() {
     JetchatPracticeTheme {
         Surface {
             Column {
-                JetchatDrawerContent({}, {})
+                JetchatDrawerContent()
             }
         }
     }
@@ -196,7 +203,7 @@ fun DrawerPreviewDark() {
     JetchatPracticeTheme(isDarkTheme = true) {
         Surface {
             Column {
-                JetchatDrawerContent({}, {})
+                JetchatDrawerContent()
             }
         }
     }

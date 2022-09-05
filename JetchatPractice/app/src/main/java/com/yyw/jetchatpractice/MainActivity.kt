@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity() {
                     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                     val drawerOpen by viewModel.drawerShouldBeOpened.collectAsState()
                     val uiState by viewModel.mUiState.collectAsState()
+                    val chartName by remember(uiState) {
+                        derivedStateOf { uiState.channelName }
+                    }
                     if (drawerOpen) {
                         // Open drawer and reset state in VM.
                         LaunchedEffect(Unit) {
@@ -64,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     JetchatDrawer(
+                        chartName = chartName,
                         drawerState = drawerState,
                         onProfileClicked = {
                             Log.d(TAG, "onProfileClicked")

@@ -26,6 +26,7 @@ import com.yyw.jetchatpractice.ui.theme.JetchatPracticeTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JetchatDrawer(
+    chartName: String = "#composers",
     drawerState: DrawerState = rememberDrawerState(initialValue = DrawerValue.Closed),
     onProfileClicked: (String) -> Unit,
     onChatClicked: (String) -> Unit,
@@ -37,6 +38,7 @@ fun JetchatDrawer(
             drawerState = drawerState,
             drawerContent = {
                 JetchatDrawerContent(
+                    chartName = chartName,
                     onProfileClicked = onProfileClicked,
                     onChatClicked = onChatClicked
                 )
